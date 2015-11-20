@@ -103,10 +103,12 @@ class GitHistoryView extends SelectListView
                 fs.mkdir outputDir if not fs.existsSync outputDir
                 outputFilePath = "#{outputDir}/#{logItem.hash}-#{path.basename(@file)}"
                 outputFilePath += ".diff" if @_isDiffEnabled()
+                inputFilePath = "#{(@file)}"
                 fs.writeFile outputFilePath, fileContents, (error) ->
                     if not error
                         options = {split: "right", activatePane: yes}
-                        atom.workspace.open(outputFilePath, options)
+                        url = "compare-files://editor/" + outputFilePath + "..." + inputFilePath
+                        atom.workspace.open(url, options)
             else
                 @setError "Could not retrieve history for #{path.basename(@file)}"
 
